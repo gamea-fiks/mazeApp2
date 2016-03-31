@@ -4,15 +4,13 @@ using System.Collections;
 public class EnemyAI2 : MonoBehaviour {
 
     public Transform target; //プレイヤーの位置
+    public float goalRange;
+    public float playerRange;
     static Vector3 pos;
     NavMeshAgent agent;
 
     float agentToPatroldistance;
     float agentToTargetdistance;
-
- //   void Awake() {
- //       agent = GetComponent<NavMeshAgent>();
- //   }
 
     // Use this for initialization
     void Start () {
@@ -32,12 +30,12 @@ public class EnemyAI2 : MonoBehaviour {
 
 
             //プレイヤーと目的地の距離が15f以下になると次の目的地をランダム指定
-         if (agentToPatroldistance < 7f) {
+         if (agentToPatroldistance < goalRange) {
             DoPatrol();
         }
 
         //プレイヤーと目的地の距離が15f以下になると次の目的地をランダム指定
-        if (agentToTargetdistance < 3f) {
+        if (agentToTargetdistance < playerRange) {
             Debug.Log("プレイヤーを追いかけとるよ" + agentToTargetdistance);
             DoTracking();
         }

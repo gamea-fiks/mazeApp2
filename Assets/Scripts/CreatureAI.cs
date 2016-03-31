@@ -4,6 +4,8 @@ using System.Collections;
 public class CreatureAI : MonoBehaviour {
 
     public Transform target; //プレイヤーの位置
+    public float goalRange;
+    public float playerRange;
     static Vector3 pos;
     NavMeshAgent agent;
     private Animator anim;
@@ -23,33 +25,33 @@ public class CreatureAI : MonoBehaviour {
         DoPatrol();
 
     }
-
-    // Update is called once per frame
-    void Update() {
+        
+    public void EnemyMove() {
         //Agentと目的地の距離
         agentToPatroldistance = Vector3.Distance(this.agent.transform.position, pos);
-        Debug.Log(agentToPatroldistance + "目的地：" + pos + "敵位置" + this.agent.transform.position);
+        // Debug.Log(agentToPatroldistance + "目的地：" + pos + "敵位置" + this.agent.transform.position);
 
         //Agentとプレイヤーの距離
         agentToTargetdistance = Vector3.Distance(this.agent.transform.position, target.transform.position);
 
 
         //agentと目的地の距離が15f以下になると次の目的地をランダム指定
-        if (agentToPatroldistance < 15f) {
+        if (agentToPatroldistance < goalRange) {
             DoPatrol();
         }
 
         //プレイヤーとagentの距離が15f以下になると次の目的地をランダム指定
-        if (agentToTargetdistance < 10f) {
-            Debug.Log("プレイヤーを追いかけとるよ" + agentToTargetdistance);
-            anim.SetBool("run", true);  
+        if (agentToTargetdistance < playerRange) {
+            //            Debug.Log("プレイヤーを追いかけとるよ" + agentToTargetdistance);
+            anim.SetBool("run", true);
+            agent.speed = 15f;
             DoTracking();
-         } else {
-            anim.SetBool("run", false);
         }
-
+        else {
+            anim.SetBool("run", false);
+            agent.speed = 4f;
+        }
     }
-        
 
 
     //エージェントが向かう先をランダムに指定するメソッド
@@ -66,6 +68,11 @@ public class CreatureAI : MonoBehaviour {
         pos = target.position;
         agent.SetDestination(pos);
 
+    }
+
+    //クリア時に破壊する
+    public void Destroy() {
+        Destroy(gameObject);
     }
 
     //エネミーに衝突したら終了

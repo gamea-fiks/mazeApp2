@@ -5,7 +5,10 @@ TagManager:
   serializedVersion: 2
   tags:
   - Wall
+  - Coin
+  - Clear
   - Enemy
+  - Text
   layers:
   - Default
   - TransparentFX
